@@ -8,10 +8,13 @@ import {
 import { ChevronDown } from 'lucide-react';
 
 const colorPalettes = {
-  redYellow: 'linear-gradient(to right, #e61c1c, #e6e61c)', // Updated gradient
-  greenBlue: 'linear-gradient(to right, #2193b0, #6dd5ed)',
+  redYellow: 'linear-gradient(to right, #e61c1c, #e6e61c)',
+  deepOcean: 'linear-gradient(to right, #000033, #006994)', 
   purplePink: 'linear-gradient(to right, #e61c98, #d04ed6)',
   sunset: 'linear-gradient(to right, #f20c0c, #ebb0b0)',
+  forest: 'linear-gradient(to right, #1a4314, #98fb98)', 
+  greenBlue: 'linear-gradient(to right, #2193b0, #6dd5ed)',
+
 };
 
 export const GradientPicker = ({ selectedPalette, setSelectedPalette }: { selectedPalette: string, setSelectedPalette: (value: string) => void }) => {

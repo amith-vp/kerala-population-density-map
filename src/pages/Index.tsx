@@ -95,6 +95,38 @@ const colorPalettes = {
       [165, 0, 38],
       [128, 0, 38]  
     ]
+  },
+  forest: {
+    name: 'Forest',
+    range: [
+      [152, 251, 152], 
+      [144, 238, 144],
+      [124, 205, 124],
+      [102, 172, 102],
+      [85, 139, 85],
+      [67, 106, 67],
+      [50, 83, 50],
+      [34, 60, 34],
+      [26, 47, 26],
+      [18, 34, 18],
+      [10, 20, 10]
+    ]
+  },
+  deepOcean: {
+    name: 'Deep Ocean',
+    range: [
+      [179, 205, 224], // Light Steel Blue
+      [135, 169, 204], // Steel Blue
+      [87, 133, 184],  // Blue Gray
+      [52, 105, 164],  // Ocean Blue
+      [32, 84, 147],   // Deep Ocean
+      [21, 67, 130],   // Dark Ocean
+      [14, 51, 115],   // Deep Sea
+      [8, 37, 103],    // Abyss Blue
+      [3, 27, 89],     // Dark Abyss
+      [0, 19, 74],     // Ocean Deep
+      [0, 13, 51]      // Deepest Ocean
+    ]
   }
 };
 
