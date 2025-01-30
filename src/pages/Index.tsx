@@ -131,7 +131,7 @@ export default function App({
       wireframe: false,
       lineWidthMinPixels: 0,
       getElevation: f => f.properties.NDVI,
-      elevationScale: 1.5,
+      elevationScale: 2.2,
       getFillColor: f => colorScale(f.properties.NDVI),
       getLineColor: [0, 0, 0, 0],
       getLineWidth: 0,
