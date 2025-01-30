@@ -1,6 +1,15 @@
 import React from 'react';
 
-export const LoadingScreen = () => {
+type LoadingScreenProps = {
+  progress?: {
+    loaded: number;
+    total: number;
+  };
+};
+
+export const LoadingScreen: React.FC<LoadingScreenProps> = ({ progress }) => {
+  const percentage = progress ? Math.round((progress.loaded / progress.total) * 100) : 0;
+
   return (
     <div
       style={{
@@ -21,7 +30,7 @@ export const LoadingScreen = () => {
       }}
       className="dark:bg-opacity-90 dark:bg-black"
     >
-      <div 
+      {/* <div 
         style={{
           width: '40px',
           height: '40px',
@@ -31,7 +40,7 @@ export const LoadingScreen = () => {
           animation: 'spin 1s linear infinite'
         }}
         className="dark:border-gray-600 dark:border-t-blue-500"
-      />
+      /> */}
       <div
         style={{
           fontFamily: 'Inter, sans-serif',
@@ -46,6 +55,29 @@ export const LoadingScreen = () => {
         className="dark:text-gray-200"
       >
         <span>Loading Population Data</span>
+        <div
+          style={{
+            width: '200px',
+            height: '4px',
+            background: 'rgba(52, 152, 219, 0.1)',
+            borderRadius: '2px',
+            overflow: 'hidden',
+            margin: '8px 0'
+          }}
+          className="dark:bg-blue-900/20"
+        >
+          {progress && (
+            <div
+              style={{
+                width: `${percentage}%`,
+                height: '100%',
+                background: '#3498db',
+                transition: 'width 0.3s ease'
+              }}
+              className="dark:bg-blue-500"
+            />
+          )}
+        </div>
         <span 
           style={{
             fontSize: '14px',
@@ -54,7 +86,9 @@ export const LoadingScreen = () => {
           }}
           className="dark:text-gray-400"
         >
-          Please wait...
+          {progress 
+            ? `Loading ${progress.loaded.toLocaleString()} of ${progress.total.toLocaleString()} polygons...`
+            : 'Please wait...'}
         </span>
         <div
           style={{

@@ -61,11 +61,13 @@ export default function App({
   const [geojsonData, setGeojsonData] = useState<Feature<Geometry, BlockProperties>[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [progress, setProgress] = useState<{ loaded: number; total: number; } | null>(null);
 
   useEffect(() => {
     if (typeof data === 'string') {
       setLoading(true);
       setError(null);
+      setProgress(null);
       
       const worker = new Worker(
         new URL('../workers/geojsonLoader.ts', import.meta.url),
@@ -75,11 +77,13 @@ export default function App({
       worker.onmessage = (e: MessageEvent<WorkerMessage>) => {
         if (e.data.type === 'success') {
           setGeojsonData(e.data.data);
+          setLoading(false);
+        } else if (e.data.type === 'progress') {
+          setProgress({ loaded: e.data.loaded, total: e.data.total });
         } else {
           setError(e.data.error);
+          setLoading(false);
         }
-        setLoading(false);
-        worker.terminate();
       };
 
       worker.postMessage(data);
@@ -158,7 +162,7 @@ export default function App({
   }, [theme]);
 
   if (loading) {
-    return <LoadingScreen />;
+    return <LoadingScreen progress={progress} />;
   }
 
   if (error) {

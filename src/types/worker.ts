@@ -5,6 +5,10 @@ export type WorkerMessage = {
   type: 'success';
   data: Feature<Geometry, BlockProperties>[];
 } | {
+  type: 'progress';
+  loaded: number;
+  total: number;
+} | {
   type: 'error';
   error: string;
 };
