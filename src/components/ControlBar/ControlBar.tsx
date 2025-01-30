@@ -35,6 +35,15 @@ export const ControlBar = ({
     }
   }, [showGradients]);
 
+  const gradients = {
+    redYellow: 'linear-gradient(to right, #e61c1c, #e6e61c)',
+    deepOcean: 'linear-gradient(to right, #000033, #006994)', 
+    purplePink: 'linear-gradient(to right, #e61c98, #d04ed6)',
+    sunset: 'linear-gradient(to right, #f20c0c, #ebb0b0)',
+    forest: 'linear-gradient(to right, #1a4314, #98fb98)', 
+    greenBlue: 'linear-gradient(to right, #2193b0, #6dd5ed)',
+  };
+
   return (
     <div className="fixed bottom-10 left-1/2 -translate-x-1/2">
       {(showGradients || isAnimating) && (
@@ -73,7 +82,7 @@ export const ControlBar = ({
               <div className="flex items-center gap-1">
                 <div 
                   className="h-7 w-10 rounded-sm shadow-sm" 
-                  style={{ background: colorPalettes[selectedPalette] }} 
+                  style={{ background: gradients[selectedPalette] }} 
                 />
                 <ChevronUp 
                   className={`h-4 w-4 text-black/70 dark:text-white/90 transition-transform duration-200 ${
