@@ -3,7 +3,7 @@ import {createRoot} from 'react-dom/client';
 import {Map} from 'react-map-gl/maplibre';
 import DeckGL from '@deck.gl/react';
 import {GeoJsonLayer, PolygonLayer} from '@deck.gl/layers';
-import {LightingEffect, AmbientLight, _SunLight as SunLight} from '@deck.gl/core';
+import {LightingEffect, AmbientLight,FlyToInterpolator, _SunLight as SunLight} from '@deck.gl/core';
 import {scaleThreshold} from 'd3-scale';
 import { ControlBar } from '@/components/ControlBar/ControlBar';
 import { LoadingScreen } from '@/components/LoadingScreen/LoadingScreen';
@@ -113,8 +113,10 @@ export default function App({
 
   const viewState = useMemo(() => ({
     ...INITIAL_VIEW_STATE,
-    pitch: is3D ? 60 : 0,  
-    bearing: is3D ? 310 : 0  
+    pitch: is3D ? 60 : 0,
+    bearing: is3D ? 310 : 0,
+    transitionDuration: 1000,
+    transitionInterpolator: new FlyToInterpolator()
   }), [is3D]);
 
   const layers = useMemo(() => [
