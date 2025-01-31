@@ -104,6 +104,7 @@ export default function App({
   const [is3D, setIs3D] = useState(true);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mapStyle, setMapStyle] = useState(MAP_STYLE);
+  const [currentViewState, setCurrentViewState] = useState(INITIAL_VIEW_STATE);
 
   const colorScale = useMemo(() => {
     return scaleThreshold<number, Color>()
@@ -112,12 +113,27 @@ export default function App({
   }, [selectedPalette]);
 
   const viewState = useMemo(() => ({
-    ...INITIAL_VIEW_STATE,
+    ...currentViewState,
     pitch: is3D ? 60 : 0,
     bearing: is3D ? 310 : 0,
     transitionDuration: 1000,
     transitionInterpolator: new FlyToInterpolator()
   }), [is3D]);
+
+  const handleViewStateChange = ({ viewState }: { viewState: MapViewState }) => {
+    setCurrentViewState(viewState);
+  };
+
+  const handle3DChange = (newIs3D: boolean) => {
+    setIs3D(newIs3D);
+    setCurrentViewState(prevState => ({
+      ...prevState,
+      pitch: newIs3D ? 60 : 0,
+      bearing: newIs3D ? 310 : 0,
+      transitionDuration: 1000,
+      transitionInterpolator: new FlyToInterpolator()
+    }));
+  };
 
   const layers = useMemo(() => [
     new PolygonLayer<Position[]>({
@@ -248,6 +264,7 @@ export default function App({
         effects={effects}
         initialViewState={viewState}
         controller={{ touchRotate: true, dragPan: true }}
+        onViewStateChange={handleViewStateChange}
       >
         <Map reuseMaps mapStyle={mapStyle} />
       </DeckGL>
@@ -258,7 +275,7 @@ export default function App({
         selectedPalette={selectedPalette} 
         setSelectedPalette={setSelectedPalette} 
         is3D={is3D} 
-        setIs3D={setIs3D} 
+        setIs3D={handle3DChange} 
         theme={theme} 
         setTheme={setTheme} 
       />
