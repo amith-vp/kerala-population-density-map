@@ -1,4 +1,4 @@
-import React, {useState, useMemo, useEffect, useCallback} from 'react';
+import React, {useState, useMemo, useEffect} from 'react';
 import {createRoot} from 'react-dom/client';
 import {Map} from 'react-map-gl/maplibre';
 import DeckGL from '@deck.gl/react';
@@ -104,32 +104,18 @@ export default function App({
   const [is3D, setIs3D] = useState(true);
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
   const [mapStyle, setMapStyle] = useState(MAP_STYLE);
-  const [currentPosition, setCurrentPosition] = useState({
-    longitude: INITIAL_VIEW_STATE.longitude,
-    latitude: INITIAL_VIEW_STATE.latitude,
-    zoom: INITIAL_VIEW_STATE.zoom
-  });
-
-  const onViewStateChange = useCallback(({viewState}: {viewState: MapViewState}) => {
-    setCurrentPosition({
-      longitude: viewState.longitude,
-      latitude: viewState.latitude,
-      zoom: viewState.zoom
-    });
-  }, []);
-
-  const getCurrentViewState = useMemo(() => ({
-    ...INITIAL_VIEW_STATE,
-    ...currentPosition,  
-    pitch: is3D ? 60 : 0,
-    bearing: is3D ? 310 : 0
-  }), [currentPosition, is3D]);
 
   const colorScale = useMemo(() => {
     return scaleThreshold<number, Color>()
       .domain(COLOR_SCALE_DOMAIN)
       .range(colorPalettes[selectedPalette]?.range || colorPalettes.redYellow.range);
   }, [selectedPalette]);
+
+  const viewState = useMemo(() => ({
+    ...INITIAL_VIEW_STATE,
+    pitch: is3D ? 60 : 0,  
+    bearing: is3D ? 310 : 0  
+  }), [is3D]);
 
   const layers = useMemo(() => [
     new PolygonLayer<Position[]>({
@@ -258,21 +244,8 @@ export default function App({
       <DeckGL
         layers={layers}
         effects={effects}
-        viewState={getCurrentViewState}
-        onViewStateChange={onViewStateChange}
-        controller={{
-          touchRotate: true,
-          dragPan: true,
-          doubleClickZoom: true,
-          touchZoom: true,
-          scrollZoom: {
-            speed: 0.01,
-            smooth: true
-          },
-          keyboard: true,
-          dragRotate: is3D,
-          inertia: true
-        }}
+        initialViewState={viewState}
+        controller={{ touchRotate: true, dragPan: true }}
       >
         <Map reuseMaps mapStyle={mapStyle} />
       </DeckGL>
