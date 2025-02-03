@@ -50,11 +50,11 @@ const landCover: Position[][] = [
 ];
 
 export type BlockProperties = {
-  NDVI: number;
+  density: number;
 };
 
 export default function App({
-  data = '/density.geojson' 
+  data = '/kerala.ndjson' 
 }: {
   data?: string | Feature<Geometry, BlockProperties>[];
 }) {
@@ -152,9 +152,9 @@ export default function App({
       extruded: is3D,
       wireframe: false,
       lineWidthMinPixels: 0,
-      getElevation: f => f.properties.NDVI,
+      getElevation: f => f.properties.density,
       elevationScale: 2.2,
-      getFillColor: f => colorScale(f.properties.NDVI),
+      getFillColor: f => colorScale(f.properties.density),
       getLineColor: [0, 0, 0, 0],
       getLineWidth: 0,
       pickable: true,

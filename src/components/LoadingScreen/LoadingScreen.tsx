@@ -8,7 +8,9 @@ type LoadingScreenProps = {
 };
 
 export const LoadingScreen: React.FC<LoadingScreenProps> = ({ progress }) => {
-  const percentage = progress ? Math.round((progress.loaded / progress.total) * 100) : 0;
+  const percentage = progress ? Math.round((progress.loaded / (progress.total || 1)) * 100) : 0;
+  // Assume numbers greater than 10000 indicate byte-based progress
+  const isByteProgress = progress ? progress.total > 10000 : false;
 
   return (
     <div
@@ -72,7 +74,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ progress }) => {
                 width: `${percentage}%`,
                 height: '100%',
                 background: '#3498db',
-                transition: 'width 0.3s ease'
+                transition: 'width 0.1s ease'
               }}
               className="dark:bg-blue-500"
             />
@@ -86,9 +88,7 @@ export const LoadingScreen: React.FC<LoadingScreenProps> = ({ progress }) => {
           }}
           className="dark:text-gray-400"
         >
-          {progress 
-            ? `Loading ${progress.loaded.toLocaleString()} of ${progress.total.toLocaleString()} polygons...`
-            : 'Please wait...'}
+          {progress ? `${percentage}% complete` : 'Please wait...'}
         </span>
         <div
           style={{
